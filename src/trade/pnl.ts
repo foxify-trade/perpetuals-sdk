@@ -29,7 +29,7 @@ export const getPnl = (
   if (!price) {
     return;
   }
-  const posDai = trade.initialPosToken * tradeInfo.tokenPriceDai;
+  const posDai = trade.positionSizeDai;
   const { openPrice, leverage } = trade;
   const {
     maxGainP,

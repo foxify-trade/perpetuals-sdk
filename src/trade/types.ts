@@ -16,7 +16,7 @@ export type TradeContainer = {
 export type Trade = {
   buy: boolean;
   index: number;
-  initialPosToken: number;
+  positionSizeDai: number;
   leverage: number;
   openPrice: number;
   pairIndex: number;
@@ -28,7 +28,6 @@ export type Trade = {
 export type TradeInfo = {
   openInterestDai: number;
   slLastUpdated: number;
-  tokenPriceDai: number;
   tpLastUpdated: number;
 };
 

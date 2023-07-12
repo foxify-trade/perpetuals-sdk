@@ -18,7 +18,7 @@ export const getLiquidationPrice = (
   initialAccFees: TradeInitialAccFees,
   context: GetLiqPriceContext
 ): number => {
-  const posDai = trade.initialPosToken * tradeInfo.tokenPriceDai;
+  const posDai = trade.positionSizeDai;
 
   const liqPriceDistance =
     (trade.openPrice *

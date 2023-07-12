@@ -57,16 +57,16 @@ export const fetchOpenPairTradesRaw = async (
 
       const openPairTradesBatch = useMulticall
         ? await fetchOpenPairTradesBatchMulticall(
-            contracts,
-            batchStartPairIndex,
-            batchEndPairIndex,
-            blockTag
-          )
+          contracts,
+          batchStartPairIndex,
+          batchEndPairIndex,
+          blockTag
+        )
         : await fetchOpenPairTradesBatch(
-            contracts,
-            batchStartPairIndex,
-            batchEndPairIndex
-          );
+          contracts,
+          batchStartPairIndex,
+          batchEndPairIndex
+        );
 
       allOpenPairTrades = allOpenPairTrades.concat(openPairTradesBatch);
     }
@@ -342,9 +342,9 @@ const _prepareTradeContainer = (
 ) => ({
   trade: {
     trader: trade.trader,
+    positionSizeDai: parseFloat(trade.positionSizeDai.toString()) / 1e18,
     pairIndex: parseInt(trade.pairIndex.toString()),
     index: parseInt(trade.index.toString()),
-    initialPosToken: parseFloat(trade.initialPosToken.toString()) / 1e18,
     openPrice: parseFloat(trade.openPrice.toString()) / 1e10,
     buy: trade.buy.toString() === "true",
     leverage: parseInt(trade.leverage.toString()),
@@ -353,7 +353,6 @@ const _prepareTradeContainer = (
   },
   tradeInfo: {
     beingMarketClosed: tradeInfo.beingMarketClosed.toString() === "true",
-    tokenPriceDai: parseFloat(tradeInfo.tokenPriceDai.toString()) / 1e10,
     openInterestDai: parseFloat(tradeInfo.openInterestDai.toString()) / 1e18,
     tpLastUpdated: tradeInfo.tpLastUpdated,
     slLastUpdated: tradeInfo.slLastUpdated,

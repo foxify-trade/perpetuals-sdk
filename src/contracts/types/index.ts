@@ -23,7 +23,6 @@ export type ContractAddresses = {
   gnsPairInfosV6_1: string;
   gnsPairsStorageV6: string;
   gTokenOpenPnlFeed: string;
-  gnsNftRewardsV6: string;
   gnsNftRewardsV6_3_1: string;
   gnsBorrowingFeesV6_3_2: string;
   gnsTradingCallbacksV6_3_2: string;
