@@ -38,7 +38,7 @@ export const fetchOpenPairTradesRaw = async (
     blockTag = "latest",
   } = overrides;
 
-  const { gnsPairsStorageV6: pairsStorageContract } = contracts;
+  const { pairsStorage: pairsStorageContract } = contracts;
 
   try {
     const totalPairIndexes =
@@ -57,16 +57,16 @@ export const fetchOpenPairTradesRaw = async (
 
       const openPairTradesBatch = useMulticall
         ? await fetchOpenPairTradesBatchMulticall(
-            contracts,
-            batchStartPairIndex,
-            batchEndPairIndex,
-            blockTag
-          )
+          contracts,
+          batchStartPairIndex,
+          batchEndPairIndex,
+          blockTag
+        )
         : await fetchOpenPairTradesBatch(
-            contracts,
-            batchStartPairIndex,
-            batchEndPairIndex
-          );
+          contracts,
+          batchStartPairIndex,
+          batchEndPairIndex
+        );
 
       allOpenPairTrades = allOpenPairTrades.concat(openPairTradesBatch);
     }
@@ -84,10 +84,8 @@ const fetchOpenPairTradesBatch = async (
   startPairIndex: number,
   endPairIndex: number
 ): Promise<TradeContainerRaw[]> => {
-  const {
-    gfarmTradingStorageV5: storageContract,
-    gnsBorrowingFees: borrowingFeesContract,
-  } = contracts;
+  const { storage: storageContract, borrowingFees: borrowingFeesContract } =
+    contracts;
 
   const maxTradesPerPair = (
     await storageContract.maxTradesPerPair()
@@ -109,7 +107,7 @@ const fetchOpenPairTradesBatch = async (
       }
 
       const openTradesForPairTraders = await Promise.all(
-        pairTraderAddresses.map(async pairTraderAddress => {
+        pairTraderAddresses.map(async (pairTraderAddress: any) => {
           const openTradesCalls = new Array(maxTradesPerPair);
           for (
             let pairTradeIndex = 0;
@@ -195,6 +193,7 @@ const fetchOpenPairTradesBatch = async (
   );
 
   const perPairTrades = rawTrades.reduce((a, b) => a.concat(b), []);
+  //@ts-ignore
   return perPairTrades.reduce((a, b) => a.concat(b), []);
 };
 
@@ -204,10 +203,8 @@ const fetchOpenPairTradesBatchMulticall = async (
   endPairIndex: number,
   blockTag: BlockTag
 ): Promise<TradeContainerRaw[]> => {
-  const {
-    gfarmTradingStorageV5: storageContract,
-    gnsBorrowingFees: borrowingFeesContract,
-  } = contracts;
+  const { storage: storageContract, borrowingFees: borrowingFeesContract } =
+    contracts;
 
   // Convert to Multicall for efficient RPC usage
   const multicallProvider = new Provider();
@@ -344,7 +341,7 @@ const _prepareTradeContainer = (
     trader: trade.trader,
     pairIndex: parseInt(trade.pairIndex.toString()),
     index: parseInt(trade.index.toString()),
-    initialPosToken: parseFloat(trade.initialPosToken.toString()) / 1e18,
+    positionSizeStable: parseFloat(trade.positionSizeStable.toString()) / 1e18,
     openPrice: parseFloat(trade.openPrice.toString()) / 1e10,
     buy: trade.buy.toString() === "true",
     leverage: parseInt(trade.leverage.toString()),
@@ -353,8 +350,9 @@ const _prepareTradeContainer = (
   },
   tradeInfo: {
     beingMarketClosed: tradeInfo.beingMarketClosed.toString() === "true",
-    tokenPriceDai: parseFloat(tradeInfo.tokenPriceDai.toString()) / 1e10,
-    openInterestDai: parseFloat(tradeInfo.openInterestDai.toString()) / 1e18,
+    tokenPriceStable: parseFloat(tradeInfo.tokenPriceStable.toString()) / 1e10,
+    openInterestStable:
+      parseFloat(tradeInfo.openInterestStable.toString()) / 1e18,
     tpLastUpdated: tradeInfo.tpLastUpdated,
     slLastUpdated: tradeInfo.slLastUpdated,
   },

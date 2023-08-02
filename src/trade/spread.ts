@@ -1,18 +1,11 @@
 import { OpenInterest, PairParams } from "./types";
 
-export const getBaseSpreadP = (
-  pairSpreadP: number | undefined,
-  spreadReductionP: number | undefined
-): number => {
+export const getBaseSpreadP = (pairSpreadP: number | undefined): number => {
   if (!pairSpreadP) {
     return 0;
   }
 
-  if (!spreadReductionP) {
-    return pairSpreadP;
-  }
-
-  return (pairSpreadP * (100 - spreadReductionP)) / 100;
+  return pairSpreadP;
 };
 
 export const getSpreadWithPriceImpactP = (

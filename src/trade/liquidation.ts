@@ -18,13 +18,13 @@ export const getLiquidationPrice = (
   initialAccFees: TradeInitialAccFees,
   context: GetLiqPriceContext
 ): number => {
-  const posDai = trade.initialPosToken * tradeInfo.tokenPriceDai;
+  const posStable = trade.positionSizeStable;
 
   const liqPriceDistance =
     (trade.openPrice *
-      (posDai * 0.9 -
+      (posStable * 0.9 -
         getRolloverFee(
-          posDai,
+          posStable,
           initialAccFees.rollover,
           initialAccFees.openedAfterUpdate,
           {
@@ -33,14 +33,14 @@ export const getLiquidationPrice = (
           } as GetRolloverFeeContext
         ) -
         getBorrowingFee(
-          posDai * trade.leverage,
+          posStable * trade.leverage,
           trade.pairIndex,
           trade.buy,
           initialAccFees.borrowing,
           context as GetBorrowingFeeContext
         ) -
         getFundingFee(
-          posDai * trade.leverage,
+          posStable * trade.leverage,
           initialAccFees.funding,
           trade.buy,
           initialAccFees.openedAfterUpdate,
@@ -49,7 +49,7 @@ export const getLiquidationPrice = (
             currentBlock: context.currentL1Block,
           } as GetFundingFeeContext
         ))) /
-    posDai /
+    posStable /
     trade.leverage;
 
   return trade.buy

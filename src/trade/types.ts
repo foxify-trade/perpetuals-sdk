@@ -1,4 +1,4 @@
-import { GFarmTradingStorageV5 } from "@/contracts/types/generated";
+import { TradingStorage } from "@/contracts/types/generated";
 import { BigNumber } from "ethers";
 import { BorrowingFee } from "./fees/borrowing";
 
@@ -16,7 +16,7 @@ export type TradeContainer = {
 export type Trade = {
   buy: boolean;
   index: number;
-  initialPosToken: number;
+  positionSizeStable: number;
   leverage: number;
   openPrice: number;
   pairIndex: number;
@@ -26,9 +26,9 @@ export type Trade = {
 };
 
 export type TradeInfo = {
-  openInterestDai: number;
+  openInterestStable: number;
   slLastUpdated: number;
-  tokenPriceDai: number;
+  tokenPriceStable: number;
   tpLastUpdated: number;
 };
 
@@ -56,20 +56,18 @@ export type LimitOrder = {
   pairIndex: number;
   positionSize: number;
   sl: number;
-  spreadReductionP: number;
   tp: number;
   trader: string;
   type: number;
 };
 
-export type LimitOrderRaw = GFarmTradingStorageV5.OpenLimitOrderStructOutput & {
+export type LimitOrderRaw = TradingStorage.OpenLimitOrderStructOutput & {
   type: number;
 };
 
 export type Fee = {
   closeFeeP: number;
-  minLevPosDai: number;
-  nftLimitOrderFeeP: number;
+  minLevPosStable: number;
   openFeeP: number;
   referralFeeP: number;
 };
@@ -177,8 +175,8 @@ export enum PositionType {
 }
 
 export type TradeContainerRaw = {
-  trade: GFarmTradingStorageV5.TradeStruct;
-  tradeInfo: GFarmTradingStorageV5.TradeInfoStruct;
+  trade: TradingStorage.TradeStruct;
+  tradeInfo: TradingStorage.TradeInfoStruct;
   initialAccFees: {
     rollover: BigNumber;
     funding: BigNumber;

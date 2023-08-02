@@ -7,13 +7,13 @@ import {
 } from "../types";
 
 export const getClosingFee = (
-  posDai: number,
+  posStable: number,
   leverage: number,
   pairIndex: number,
   pairFee: Fee | undefined
 ): number => {
   if (
-    posDai === undefined ||
+    posStable === undefined ||
     leverage === undefined ||
     pairIndex === undefined ||
     pairFee === undefined
@@ -21,9 +21,9 @@ export const getClosingFee = (
     return 0;
   }
 
-  const { closeFeeP, nftLimitOrderFeeP } = pairFee;
+  const { closeFeeP } = pairFee;
 
-  return (closeFeeP + nftLimitOrderFeeP) * posDai * leverage;
+  return closeFeeP  * posStable * leverage;
 };
 
 export type GetFundingFeeContext = {
@@ -34,7 +34,7 @@ export type GetFundingFeeContext = {
 };
 
 export const getFundingFee = (
-  leveragedPosDai: number,
+  leveragedPosStable: number,
   initialAccFundingFees: number,
   buy: boolean,
   openedAfterUpdate: boolean,
@@ -63,7 +63,7 @@ export const getFundingFee = (
     ? accPerOiLong + fundingFeesPaidByLongs / longOi
     : accPerOiShort + (fundingFeesPaidByLongs * -1) / shortOi;
 
-  return leveragedPosDai * (pendingAccFundingFees - initialAccFundingFees);
+  return leveragedPosStable * (pendingAccFundingFees - initialAccFundingFees);
 };
 
 export type GetRolloverFeeContext = {
@@ -73,7 +73,7 @@ export type GetRolloverFeeContext = {
 };
 
 export const getRolloverFee = (
-  posDai: number,
+  posStable: number,
   initialAccRolloverFees: number,
   openedAfterUpdate: boolean,
   context: GetRolloverFeeContext
@@ -94,7 +94,7 @@ export const getRolloverFee = (
   const pendingAccRolloverFees =
     accPerCollateral + (currentBlock - lastUpdateBlock) * rolloverFeePerBlockP;
 
-  return posDai * (pendingAccRolloverFees - initialAccRolloverFees);
+  return posStable * (pendingAccRolloverFees - initialAccRolloverFees);
 };
 
 export * from "./borrowing";

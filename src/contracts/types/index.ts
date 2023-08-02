@@ -1,32 +1,31 @@
 import {
-  GFarmTradingStorageV5,
-  GNSPairInfosV6_1,
-  GNSPairsStorageV6,
-  GTokenOpenPnlFeed,
-  GNSNftRewardsV6_3_1,
-  GNSBorrowingFeesV6_3_2,
-  GNSTradingCallbacksV6_3_2,
+  TradingStorage,
+  PairInfos,
+  PairsStorage,
+  OpenPnlFeed,
+  OrderTokenManagement,
+  BorrowingFees,
+  Callbacks,
 } from "./generated";
 
 export type Contracts = {
-  gfarmTradingStorageV5: GFarmTradingStorageV5;
-  gnsPairInfosV6_1: GNSPairInfosV6_1;
-  gnsPairsStorageV6: GNSPairsStorageV6;
-  gTokenOpenPnlFeed: GTokenOpenPnlFeed;
-  gnsNftRewards: GNSNftRewardsV6_3_1;
-  gnsBorrowingFees: GNSBorrowingFeesV6_3_2;
-  gnsTradingCallbacks: GNSTradingCallbacksV6_3_2;
+  storage: TradingStorage;
+  pairInfos: PairInfos;
+  pairsStorage: PairsStorage;
+  openPnlFeed: OpenPnlFeed;
+  orderTokenManagement: OrderTokenManagement;
+  borrowingFees: BorrowingFees;
+  callbacks: Callbacks;
 };
 
 export type ContractAddresses = {
-  gfarmTradingStorageV5: string;
-  gnsPairInfosV6_1: string;
-  gnsPairsStorageV6: string;
-  gTokenOpenPnlFeed: string;
-  gnsNftRewardsV6: string;
-  gnsNftRewardsV6_3_1: string;
-  gnsBorrowingFeesV6_3_2: string;
-  gnsTradingCallbacksV6_3_2: string;
+  storage: string;
+  pairInfos: string;
+  pairsStorage: string;
+  openPnlFeed: string;
+  orderTokenManagement: string;
+  borrowingFees: string;
+  callbacks: string;
 };
 
 export type BlockTag = number | "latest" | "pending";

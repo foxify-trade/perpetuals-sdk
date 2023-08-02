@@ -15,7 +15,6 @@ describe("getFulfillmentPrice", () => {
     index: 0,
     positionSize: 10,
     leverage: 10,
-    spreadReductionP: 5,
     type: OpenLimitOrderType.REVERSAL,
     maxPrice: 100,
     minPrice: 90,
@@ -57,7 +56,7 @@ describe("getFulfillmentPrice", () => {
   });
 
   it("should calculate the trigger price for a buy order", () => {
-    const baseSpreadP = getBaseSpreadP(pair.spreadP, order.spreadReductionP);
+    const baseSpreadP = getBaseSpreadP(pair.spreadP);
     const spreadWithPriceImpactP = getSpreadWithPriceImpactP(
       baseSpreadP,
       order.buy,
@@ -75,10 +74,7 @@ describe("getFulfillmentPrice", () => {
 
   it("should calculate the trigger price for a sell order", () => {
     const sellOrder = { ...order, buy: false };
-    const baseSpreadP = getBaseSpreadP(
-      pair.spreadP,
-      sellOrder.spreadReductionP
-    );
+    const baseSpreadP = getBaseSpreadP(pair.spreadP);
     const spreadWithPriceImpactP = getSpreadWithPriceImpactP(
       baseSpreadP,
       sellOrder.buy,

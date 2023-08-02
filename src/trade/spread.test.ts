@@ -3,19 +3,19 @@ import { PairParams, OpenInterest } from "./types";
 
 describe("getBaseSpreadP", () => {
   it("should return 0 if pair is undefined", () => {
-    const result = getBaseSpreadP(undefined, 10);
+    const result = getBaseSpreadP(undefined);
     expect(result).toBe(0);
   });
 
   it("should return the base spread percentage if spreadReductionP is undefined", () => {
     const spreadP = 20;
-    const result = getBaseSpreadP(spreadP, undefined);
+    const result = getBaseSpreadP(spreadP);
     expect(result).toBe(spreadP);
   });
 
   it("should return the base spread percentage if spreadReductionP is 0", () => {
     const spreadP = 20;
-    const result = getBaseSpreadP(spreadP, 0);
+    const result = getBaseSpreadP(spreadP);
     expect(result).toBe(spreadP);
   });
 
@@ -23,13 +23,13 @@ describe("getBaseSpreadP", () => {
     const spreadP = 20;
     const spreadReductionP = 10;
     const expected = (spreadP * (100 - spreadReductionP)) / 100;
-    const result = getBaseSpreadP(spreadP, spreadReductionP);
+    const result = getBaseSpreadP(spreadP);
     expect(result).toBe(expected);
   });
 
   it("should return 0 if the spread reduction percentage is 100", () => {
     const spreadP = 20;
-    const result = getBaseSpreadP(spreadP, 100);
+    const result = getBaseSpreadP(spreadP);
     expect(result).toBe(0);
   });
 });

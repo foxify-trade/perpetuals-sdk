@@ -21,7 +21,6 @@ export type GetPnlContext = GetRolloverFeeContext &
 export const getPnl = (
   price: number | undefined,
   trade: Trade,
-  tradeInfo: TradeInfo,
   initialAccFees: TradeInitialAccFees,
   useFees: boolean,
   context: GetPnlContext
@@ -29,7 +28,7 @@ export const getPnl = (
   if (!price) {
     return;
   }
-  const posDai = trade.initialPosToken * tradeInfo.tokenPriceDai;
+  const posStable = trade.positionSizeStable;
   const { openPrice, leverage } = trade;
   const {
     maxGainP,
@@ -40,17 +39,17 @@ export const getPnl = (
     fee,
     currentL1Block,
   } = context;
-  const maxGain = maxGainP === undefined ? Infinity : (maxGainP / 100) * posDai;
+  const maxGain = maxGainP === undefined ? Infinity : (maxGainP / 100) * posStable;
 
-  let pnlDai = trade.buy
-    ? ((price - openPrice) / openPrice) * leverage * posDai
-    : ((openPrice - price) / openPrice) * leverage * posDai;
+  let pnlStable = trade.buy
+    ? ((price - openPrice) / openPrice) * leverage * posStable
+    : ((openPrice - price) / openPrice) * leverage * posStable;
 
-  pnlDai = pnlDai > maxGain ? maxGain : pnlDai;
+  pnlStable = pnlStable > maxGain ? maxGain : pnlStable;
 
   if (useFees) {
-    pnlDai -= getRolloverFee(
-      posDai,
+    pnlStable -= getRolloverFee(
+      posStable,
       initialAccFees.rollover,
       initialAccFees.openedAfterUpdate,
       {
@@ -60,8 +59,8 @@ export const getPnl = (
       }
     );
 
-    pnlDai -= getFundingFee(
-      posDai * trade.leverage,
+    pnlStable -= getFundingFee(
+      posStable * trade.leverage,
       initialAccFees.funding,
       trade.buy,
       initialAccFees.openedAfterUpdate,
@@ -73,8 +72,8 @@ export const getPnl = (
       }
     );
 
-    pnlDai -= getBorrowingFee(
-      posDai,
+    pnlStable -= getBorrowingFee(
+      posStable,
       trade.pairIndex,
       trade.buy,
       initialAccFees.borrowing,
@@ -82,18 +81,18 @@ export const getPnl = (
     );
   }
 
-  let pnlPercentage = (pnlDai / posDai) * 100;
+  let pnlPercentage = (pnlStable / posStable) * 100;
 
   // Can be liquidated
   if (pnlPercentage <= -90) {
     pnlPercentage = -100;
   } else {
-    pnlDai -= getClosingFee(posDai, trade.leverage, trade.pairIndex, fee);
-    pnlPercentage = (pnlDai / posDai) * 100;
+    pnlStable -= getClosingFee(posStable, trade.leverage, trade.pairIndex, fee);
+    pnlPercentage = (pnlStable / posStable) * 100;
   }
 
   pnlPercentage = pnlPercentage < -100 ? -100 : pnlPercentage;
-  pnlDai = (posDai * pnlPercentage) / 100;
+  pnlStable = (posStable * pnlPercentage) / 100;
 
-  return [pnlDai, pnlPercentage];
+  return [pnlStable, pnlPercentage];
 };

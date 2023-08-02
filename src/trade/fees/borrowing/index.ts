@@ -10,7 +10,7 @@ export type GetBorrowingFeeContext = {
 };
 
 export const getBorrowingFee = (
-  posDai: number,
+  posStable: number,
   pairIndex: number,
   long: boolean,
   initialAccFees: BorrowingFee.InitialAccFees,
@@ -57,13 +57,13 @@ export const getBorrowingFee = (
     }
   }
 
-  return (posDai * fee) / 100;
+  return (posStable * fee) / 100;
 };
 
 export const withinMaxGroupOi = (
   pairIndex: number,
   long: boolean,
-  positionSizeDai: number,
+  positionSizeStable: number,
   context: { groups: BorrowingFee.Group[]; pairs: BorrowingFee.Pair[] }
 ): boolean => {
   const { groups, pairs } = context;
@@ -73,7 +73,7 @@ export const withinMaxGroupOi = (
 
   const g = groups[getPairGroupIndex(pairIndex, { pairs })];
   return (
-    g.maxOi == 0 || (long ? g.oiLong : g.oiShort) + positionSizeDai <= g.maxOi
+    g.maxOi == 0 || (long ? g.oiLong : g.oiShort) + positionSizeStable <= g.maxOi
   );
 };
 

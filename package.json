@@ -1,7 +1,6 @@
 {
-  "name": "@gainsnetwork/sdk",
-  "version": "0.0.27",
-  "description": "Gains Network SDK",
+  "name": "@foxify-perpetuals/sdk",
+  "version": "0.0.1",
   "main": "./lib/index.js",
   "files": [
     "lib/**/*"
@@ -17,10 +16,6 @@
     "test": "jest --coverage",
     "typecheck": "tsc --noEmit",
     "generate-types": "typechain --target=ethers-v5 --out-dir ./src/contracts/types/generated ./abi/*.json"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+git@github.com:GainsNetwork-org/sdk.git"
   },
   "engines": {
     "node": ">=12.0"

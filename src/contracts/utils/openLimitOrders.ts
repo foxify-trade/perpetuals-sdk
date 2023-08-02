@@ -29,7 +29,6 @@ export const fetchOpenLimitOrders = async (
     pairIndex: parseInt(order.pairIndex.toString()),
     positionSize: parseFloat(order.positionSize.toString()) / 1e18,
     sl: parseFloat(order.sl.toString()) / 1e10,
-    spreadReductionP: parseInt(order.spreadReductionP.toString()) / 100,
     tp: parseFloat(order.tp.toString()) / 1e10,
     trader: order.trader,
     type: parseInt(order.type.toString()),
@@ -46,7 +45,7 @@ export const fetchOpenLimitOrdersRaw = async (
   console.time("fetchOpenLimitOrdersRaw");
   const { useMulticall = false, blockTag = "latest" } = overrides;
 
-  const { gfarmTradingStorageV5: storageContract, gnsNftRewards: nftRewards } =
+  const { storage: storageContract, orderTokenManagement: nftRewards } =
     contracts;
 
   const openLimitOrders = await storageContract.getOpenLimitOrders({
@@ -61,7 +60,7 @@ export const fetchOpenLimitOrdersRaw = async (
       ...nftRewards.interface.fragments,
     ]);
     openLimitOrderTypes = await multicallProvider.all(
-      openLimitOrders.map(order =>
+      openLimitOrders.map((order: any) =>
         nftRewardsContractMulticall.openLimitOrderTypes(
           order.trader,
           order.pairIndex,
@@ -90,7 +89,6 @@ export const fetchOpenLimitOrdersRaw = async (
       pairIndex: openLimitOrder.pairIndex,
       index: openLimitOrder.index,
       positionSize: openLimitOrder.positionSize,
-      spreadReductionP: openLimitOrder.spreadReductionP,
       buy: openLimitOrder.buy,
       leverage: openLimitOrder.leverage,
       tp: openLimitOrder.tp,

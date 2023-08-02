@@ -18,7 +18,7 @@ export const getFulfillmentPrice = (
   }
 
   // Get spread percentage
-  const baseSpreadP = getBaseSpreadP(pair.spreadP, order.spreadReductionP);
+  const baseSpreadP = getBaseSpreadP(pair.spreadP);
   const spreadWithPriceImpactP = getSpreadWithPriceImpactP(
     baseSpreadP,
     order.buy,
@@ -33,7 +33,7 @@ export const getFulfillmentPrice = (
 
   const askingPrice =
     (order.buy && order.type === OpenLimitOrderType.REVERSAL) ||
-    (!order.buy && order.type === OpenLimitOrderType.MOMENTUM)
+      (!order.buy && order.type === OpenLimitOrderType.MOMENTUM)
       ? order.maxPrice
       : order.minPrice;
 
