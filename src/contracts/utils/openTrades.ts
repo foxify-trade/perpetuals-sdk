@@ -350,7 +350,6 @@ const _prepareTradeContainer = (
   },
   tradeInfo: {
     beingMarketClosed: tradeInfo.beingMarketClosed.toString() === "true",
-    tokenPriceStable: parseFloat(tradeInfo.tokenPriceStable.toString()) / 1e10,
     openInterestStable:
       parseFloat(tradeInfo.openInterestStable.toString()) / 1e18,
     tpLastUpdated: tradeInfo.tpLastUpdated,

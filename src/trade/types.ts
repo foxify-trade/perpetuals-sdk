@@ -28,7 +28,6 @@ export type Trade = {
 export type TradeInfo = {
   openInterestStable: number;
   slLastUpdated: number;
-  tokenPriceStable: number;
   tpLastUpdated: number;
 };
 
