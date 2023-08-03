@@ -14,7 +14,6 @@ export type GetLiqPriceContext = GetFundingFeeContext &
 
 export const getLiquidationPrice = (
   trade: Trade,
-  tradeInfo: TradeInfo,
   initialAccFees: TradeInitialAccFees,
   context: GetLiqPriceContext
 ): number => {
