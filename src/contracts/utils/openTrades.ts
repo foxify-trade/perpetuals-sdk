@@ -341,7 +341,7 @@ const _prepareTradeContainer = (
     trader: trade.trader,
     pairIndex: parseInt(trade.pairIndex.toString()),
     index: parseInt(trade.index.toString()),
-    positionSizeStable: parseFloat(trade.positionSizeStable.toString()) / 1e18,
+    positionSizeStable: parseFloat(trade.positionSizeStable.toString()) / 1e6,
     openPrice: parseFloat(trade.openPrice.toString()) / 1e10,
     buy: trade.buy.toString() === "true",
     leverage: parseInt(trade.leverage.toString()),
@@ -351,7 +351,7 @@ const _prepareTradeContainer = (
   tradeInfo: {
     beingMarketClosed: tradeInfo.beingMarketClosed.toString() === "true",
     openInterestStable:
-      parseFloat(tradeInfo.openInterestStable.toString()) / 1e18,
+      parseFloat(tradeInfo.openInterestStable.toString()) / 1e6,
     tpLastUpdated: tradeInfo.tpLastUpdated,
     slLastUpdated: tradeInfo.slLastUpdated,
   },

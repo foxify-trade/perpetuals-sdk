@@ -35,8 +35,8 @@ export const getBorrowingFee = (
       (!firstPairGroup
         ? getPairPendingAccFee(pairIndex, context.currentBlock, long, context)
         : long
-        ? firstPairGroup.pairAccFeeLong
-        : firstPairGroup.pairAccFeeShort) - initialAccFees.accPairFee;
+          ? firstPairGroup.pairAccFeeLong
+          : firstPairGroup.pairAccFeeShort) - initialAccFees.accPairFee;
   }
 
   for (let i = pairGroups.length; i > 0; i--) {
@@ -73,7 +73,8 @@ export const withinMaxGroupOi = (
 
   const g = groups[getPairGroupIndex(pairIndex, { pairs })];
   return (
-    g.maxOi == 0 || (long ? g.oiLong : g.oiShort) + positionSizeStable <= g.maxOi
+    g.maxOi == 0 ||
+    (long ? g.oiLong : g.oiShort) + positionSizeStable <= g.maxOi
   );
 };
 
@@ -258,8 +259,9 @@ const getWeightedVaultMarketCap = (
 ): number => {
   return blockDelta > 0
     ? blockDelta /
-        (accBlockWeightedMarketCap - lastAccBlockWeightedMarketCap) /
-        1e18
+    (accBlockWeightedMarketCap - lastAccBlockWeightedMarketCap) /
+    // TODO check if this is correct
+    1e6
     : 1;
 };
 

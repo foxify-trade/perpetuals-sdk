@@ -27,7 +27,7 @@ export const fetchOpenLimitOrders = async (
     maxPrice: parseFloat(order.maxPrice.toString()) / 1e10,
     minPrice: parseFloat(order.minPrice.toString()) / 1e10,
     pairIndex: parseInt(order.pairIndex.toString()),
-    positionSize: parseFloat(order.positionSize.toString()) / 1e18,
+    positionSize: parseFloat(order.positionSize.toString()) / 1e6,
     sl: parseFloat(order.sl.toString()) / 1e10,
     tp: parseFloat(order.tp.toString()) / 1e10,
     trader: order.trader,
