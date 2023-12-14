@@ -61,7 +61,7 @@ export const getLiquidationPrice = (
     ? Math.max(trade.openPrice - liqPriceDistance, 0)
     : Math.max(trade.openPrice + liqPriceDistance, 0);
 
-    console.log(`liquidation: getLiquidationPrice(): buy=${trade.buy}, 
+    console.log(`perpetuals-sdk:liquidation: getLiquidationPrice(): buy=${trade.buy}, 
       openPrice=${trade.openPrice}, 
       liqPrice=${liqPrice}, 
       liqPriceDistance=${liqPriceDistance},
@@ -71,6 +71,6 @@ export const getLiquidationPrice = (
       posStable=${posStable},
       leverage=${trade.leverage}`);
 
-      console.log (`liquidation: trade=${JSON.stringify(trade)}, context=${JSON.stringify(context)}`)
+      console.log (`perpetuals-sdk:liquidation: trade=${JSON.stringify(trade)}, context=${JSON.stringify(context)}`)
   return liqPrice;
 };
