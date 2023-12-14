@@ -19,39 +19,58 @@ export const getLiquidationPrice = (
 ): number => {
   const posStable = trade.positionSizeStable;
 
+  const rolloverFee = getRolloverFee(
+    posStable,
+    initialAccFees.rollover,
+    initialAccFees.openedAfterUpdate,
+    {
+      ...context,
+      currentBlock: context.currentL1Block,
+    } as GetRolloverFeeContext
+  );
+
+  const borrowingFee = getBorrowingFee(
+    posStable * trade.leverage,
+    trade.pairIndex,
+    trade.buy,
+    initialAccFees.borrowing,
+    context as GetBorrowingFeeContext
+  );
+
+  const fundingFee = getFundingFee(
+  posStable * trade.leverage,
+  initialAccFees.funding,
+  trade.buy,
+  initialAccFees.openedAfterUpdate,
+  {
+    ...context,
+    currentBlock: context.currentL1Block,
+  } as GetFundingFeeContext
+);
+
   const liqPriceDistance =
     (trade.openPrice *
       (posStable * 0.9 -
-        getRolloverFee(
-          posStable,
-          initialAccFees.rollover,
-          initialAccFees.openedAfterUpdate,
-          {
-            ...context,
-            currentBlock: context.currentL1Block,
-          } as GetRolloverFeeContext
-        ) -
-        getBorrowingFee(
-          posStable * trade.leverage,
-          trade.pairIndex,
-          trade.buy,
-          initialAccFees.borrowing,
-          context as GetBorrowingFeeContext
-        ) -
-        getFundingFee(
-          posStable * trade.leverage,
-          initialAccFees.funding,
-          trade.buy,
-          initialAccFees.openedAfterUpdate,
-          {
-            ...context,
-            currentBlock: context.currentL1Block,
-          } as GetFundingFeeContext
-        ))) /
+        rolloverFee -
+        borrowingFee -
+        fundingFee)) /
     posStable /
     trade.leverage;
 
-  return trade.buy
+    const liqPrice = trade.buy
     ? Math.max(trade.openPrice - liqPriceDistance, 0)
     : Math.max(trade.openPrice + liqPriceDistance, 0);
+
+    console.log(`liquidation: getLiquidationPrice(): buy=${trade.buy}, 
+      openPrice=${trade.openPrice}, 
+      liqPrice=${liqPrice}, 
+      liqPriceDistance=${liqPriceDistance},
+      rollingFee=${rolloverFee}, 
+      borrowingFee=${borrowingFee}, 
+      fundingFee=${fundingFee},
+      posStable=${posStable},
+      leverage=${trade.leverage}`);
+
+      console.log (`liquidation: trade=${JSON.stringify(trade)}, context=${JSON.stringify(context)}`)
+  return liqPrice;
 };
